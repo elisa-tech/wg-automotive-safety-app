@@ -34,6 +34,7 @@ int main()
 
         printf("Sending Message %i\n",MC);
         printf("%i %i %i %i %i \n",Message[0],Message[1],Message[2],Message[3],Message[4]);
+        fflush(NULL);
 
         // skip message test
         if (test_skip_message & (MC%10 ==0))
