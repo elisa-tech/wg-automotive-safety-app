@@ -14,6 +14,7 @@ int main()
     mkfifo(Pipe,0666);
     int fd=open(Pipe, O_WRONLY);
 
+    // Message counter and Buffer for Message to be sent
     unsigned int MC=0;
     unsigned char Message[6];
     
@@ -43,7 +44,7 @@ int main()
         read(fd_controlpipe,Controlmessage,1);
         printf("Command code: %i\n", Controlmessage[0]);
 
-        // wrong checksum test
+        // wrong checksum test "1" corresponds to ASCII 49
         if (Controlmessage[0] == 49)
         {
             Controlmessage[0] == 10;
@@ -54,16 +55,18 @@ int main()
         printf("%i %i %i %i %i \n",Message[0],Message[1],Message[2],Message[3],Message[4]);
         fflush(NULL);
 
-        // skip message test
-        if (test_skip_message & (MC%10 ==0))
-        {}
+        // skip message test "2" corresponds to ASCII 50
+        if (Controlmessage[0] == 50)
+        {
+            Controlmessage[0] == 10;
+        }
         else
         {
             write(fd,Message,6);
         }
         
         MC+=1;
-        int sleeptime=100000;
+        int sleeptime=1000000;
         usleep(sleeptime);
     }
     close(fd);

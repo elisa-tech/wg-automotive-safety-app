@@ -80,7 +80,7 @@ while (1) {
              system("killall afbd-cluster-gauges");
         }
     }
-    int sleeptime=100000;
+    int sleeptime=1000000;
     usleep(sleeptime);
     printf("here I am, having waited for %f seconds \n",sleeptime / 1000000.0);
     fflush(NULL);
