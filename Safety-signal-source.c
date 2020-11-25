@@ -21,15 +21,16 @@ int main()
     const bool test_skip_message=false;
 
     // creating the control pipe
-    //const char* controlpipe="/tmp/signal-source-control-pipe";
-    const char* controlpipe="./signal-source-control-pipe";
+    const char* controlpipe="/tmp/signal-source-control-pipe";
+    //const char* controlpipe="./signal-source-control-pipe";
 
     mkfifo(controlpipe,0666);
-    int fd_controlpipe=open(controlpipe, O_RDONLY);
+    int fd_controlpipe=open(controlpipe, O_RDONLY | O_NONBLOCK);
 
     char Controlmessage[1];
-    // 0 for no command given, 1 for break checksum 2 for skip message
-    Controlmessage[0]=0;
+    // 10 for no command given, enter character coming from empty pipes
+    // "1" for break checksum "2" for skip message
+    Controlmessage[0]=10;
 
     while (1){
         Message[0]=1;
@@ -43,7 +44,7 @@ int main()
         printf("Command code: %i\n", Controlmessage[0]);
         if (Controlmessage[0] == 49)
         {
-            Controlmessage[0] == 0;
+            Controlmessage[0] == 10;
             Message[5]=random();
         }
         // wrong checksum test
