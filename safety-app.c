@@ -54,7 +54,7 @@ bool do_E2Echeck(unsigned char Message[6])
 
 int main()
 {
-const char* Pipe="./Pipe";
+const char* Pipe="/tmp/safety-signal-source_to_safety-app";
 unsigned char Message[6];
 printf("here I am, listening to a pipe\n");
 

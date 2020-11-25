@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 int main()
 {
-    const char* Pipe="./Pipe";
+    const char* Pipe="/tmp/safety-signal-source_to_safety-app";
     unsigned int MC=0;
     unsigned char Message[6];
     
