@@ -42,16 +42,13 @@ int main()
         
         read(fd_controlpipe,Controlmessage,1);
         printf("Command code: %i\n", Controlmessage[0]);
+
+        // wrong checksum test
         if (Controlmessage[0] == 49)
         {
             Controlmessage[0] == 10;
             Message[5]=random();
-        }
-        // wrong checksum test
-        if (test_checksum & (MC%10 ==0))
-        {
-            Message[5]=random();
-        }
+        }        
 
         printf("Sending Message %i\n",MC);
         printf("%i %i %i %i %i \n",Message[0],Message[1],Message[2],Message[3],Message[4]);

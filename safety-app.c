@@ -61,7 +61,7 @@ const char* Pipe="/tmp/safety-signal-source_to_safety-app";
 printf("here I am, listening to a pipe\n");
 mkfifo(Pipe,0666);
 int fd=open(Pipe, O_RDONLY);
-//buffer for the message to be sent
+//buffer for the message to be read
 unsigned char Message[6];
 while (1) {
     if (read(fd,Message,6) > 0)
