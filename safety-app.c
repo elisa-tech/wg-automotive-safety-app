@@ -71,6 +71,10 @@ while (1) {
         else
         {
             printf("What a mess!, SAFESTATE\n");
+            // could just kill the qt app to get the safe state black screen 
+            // killall afbd-cluster-gauges 
+            // does the trick from the shell, lets try to do that from here
+            system("killall afbd-cluster-gauges");
         }
     }
     int sleeptime=100000;

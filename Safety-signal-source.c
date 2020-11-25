@@ -13,7 +13,7 @@ int main()
     unsigned int MC=0;
     unsigned char Message[6];
     
-    const bool test_checksum=false;
+    const bool test_checksum=true;
     const bool test_skip_message=false;
 
     mkfifo(Pipe,0666);
