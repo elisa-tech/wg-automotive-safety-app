@@ -22,4 +22,7 @@ install: all
 	install -m 0755 Signalsource $(DESTDIR)/$(prefix)/bin/
 	install -m 0755 safety-app $(DESTDIR)/$(prefix)/bin/
 clean:
-	
+	rm Safety-signal-source.o
+	rm safety-app.o
+	rm Signalsource
+	rm safety-app
