@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+//needed for system
+#include <stdlib.h>
 
 unsigned int Message_counter=0;
 
@@ -54,12 +56,13 @@ bool do_E2Echeck(unsigned char Message[6])
 
 int main()
 {
+// creating the communication pipe    
 const char* Pipe="/tmp/safety-signal-source_to_safety-app";
-unsigned char Message[6];
 printf("here I am, listening to a pipe\n");
-
 mkfifo(Pipe,0666);
 int fd=open(Pipe, O_RDONLY);
+//buffer for the message to be sent
+unsigned char Message[6];
 while (1) {
     if (read(fd,Message,6) > 0)
     {
@@ -73,8 +76,8 @@ while (1) {
             printf("What a mess!, SAFESTATE\n");
             // could just kill the qt app to get the safe state black screen 
             // killall afbd-cluster-gauges 
-            // does the trick from the shell, lets try to do that from here
-            system("killall afbd-cluster-gauges");
+            // does the trick from the shell, lets try to do that from here yep, works
+             system("killall afbd-cluster-gauges");
         }
     }
     int sleeptime=100000;

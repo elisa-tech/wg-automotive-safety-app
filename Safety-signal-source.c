@@ -9,15 +9,28 @@
 #include <sys/stat.h>
 int main()
 {
+    // creating the communication pipe   
     const char* Pipe="/tmp/safety-signal-source_to_safety-app";
+    mkfifo(Pipe,0666);
+    int fd=open(Pipe, O_WRONLY);
+
     unsigned int MC=0;
     unsigned char Message[6];
     
-    const bool test_checksum=true;
+    const bool test_checksum=false;
     const bool test_skip_message=false;
 
-    mkfifo(Pipe,0666);
-    int fd=open(Pipe, O_WRONLY);
+    // creating the control pipe
+    //const char* controlpipe="/tmp/signal-source-control-pipe";
+    const char* controlpipe="./signal-source-control-pipe";
+
+    mkfifo(controlpipe,0666);
+    int fd_controlpipe=open(controlpipe, O_RDONLY);
+
+    char Controlmessage[1];
+    // 0 for no command given, 1 for break checksum 2 for skip message
+    Controlmessage[0]=0;
+
     while (1){
         Message[0]=1;
         Message[1] = (MC >> 24) & 0xFF;
@@ -26,6 +39,13 @@ int main()
         Message[4] = MC & 0xFF;
         Message[5] = (Message[0]+Message[1]+Message[2]+Message[3]+Message[4])%256;
         
+        read(fd_controlpipe,Controlmessage,1);
+        printf("Command code: %i\n", Controlmessage[0]);
+        if (Controlmessage[0] == 49)
+        {
+            Controlmessage[0] == 0;
+            Message[5]=random();
+        }
         // wrong checksum test
         if (test_checksum & (MC%10 ==0))
         {
