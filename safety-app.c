@@ -76,7 +76,9 @@ int main(void)
 				// could just kill the qt app to get the safe state black screen
 				// killall afbd-cluster-gauges
 				// does the trick from the shell, lets try to do that from here yep, works
-				system("killall afbd-cluster-gauges");
+				// system("killall afbd-cluster-gauges");
+				// Command QT app to do safe state display
+				system("cansend can0 021#0000000000000080");
 			}
 		}
 		int sleeptime = 1000000;
