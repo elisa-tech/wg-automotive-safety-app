@@ -30,11 +30,18 @@ int main(void)
 
 	char Controlmessage[1];
 	// 10 for no command given, enter character coming from empty pipes
-	// "1" for break checksum "2" for skip message
+	// "1" for break checksum
+	// "2" for skip message
+	// "3" for send safety bool = 0
 	Controlmessage[0] = 10;
 
 	while (1) {
-		Message[0] = 1;
+		if (Controlmessage[0] == 51) {
+			// Safety bool = 0 triggered, ASCI 51 correspondes to controlmessage "3"
+			Message[0] = 0;
+		} else {
+			Message[0] = 1;
+		}
 		Message[1] = (MC >> 24) & 0xFF;
 		Message[2] = (MC >> 16) & 0xFF;
 		Message[3] = (MC >> 8) & 0xFF;
@@ -61,7 +68,7 @@ int main(void)
 			fault = 1;
 		}
 		// Trigger corruption in QT app
-        	if (fault == 1) {
+		if (fault == 1) {
 			fault = 0;
 			system("cansend can0 021#0000000002000000");
 		}

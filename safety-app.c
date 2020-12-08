@@ -80,6 +80,11 @@ int main(void)
 				// Command QT app to do safe state display
 				system("cansend can0 021#0000000000000080");
 			}
+			if (Message[0] == 0) {
+				// Signal source triggered safe state
+				printf("SAFESTATE (as commanded by signal source)\n");
+				system("cansend can0 021#0000000000000080");
+			}
 		}
 		int sleeptime = 1000000;
 
