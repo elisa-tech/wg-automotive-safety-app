@@ -39,6 +39,7 @@ int main(void)
 		if (Controlmessage[0] == 51) {
 			// Safety bool = 0 triggered, ASCI 51 correspondes to controlmessage "3"
 			Message[0] = 0;
+			fault = 1;
 		} else {
 			Message[0] = 1;
 		}
