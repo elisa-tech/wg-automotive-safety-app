@@ -19,8 +19,6 @@ int main(void)
 	// Message counter and Buffer for Message to be sent
 	unsigned int MC = 0;
 	unsigned char Message[6];
-	// variable to capture whether there is a fault being generated, decides whether the QT gets messaged or not.
-	unsigned char fault = 0;
 
 	// creating the control pipe
 	const char *controlpipe = "/tmp/signal-source-control-pipe";
@@ -39,7 +37,8 @@ int main(void)
 		if (Controlmessage[0] == 51) {
 			// Safety bool = 0 triggered, ASCI 51 correspondes to controlmessage "3"
 			Message[0] = 0;
-			fault = 1;
+			// Trigger corruption in QT app
+			system("cansend can0 021#0000000002000000");
 		} else {
 			Message[0] = 1;
 		}
@@ -55,7 +54,6 @@ int main(void)
 		// wrong checksum test "1" corresponds to ASCII 49
 		if (Controlmessage[0] == 49) {
 			Message[5] = random();
-			fault = 1;
 		}
 
 		printf("Sending Message %i\n", MC);
@@ -65,15 +63,7 @@ int main(void)
 		// skip message test "2" corresponds to ASCII 50
 		if (!(Controlmessage[0] == 50)) {
 			write(fd, Message, 6);
-		} else {
-			fault = 1;
 		}
-		// Trigger corruption in QT app
-		if (fault == 1) {
-			fault = 0;
-			system("cansend can0 021#0000000002000000");
-		}
-
 		MC += 1;
 		int sleeptime = 1000000;
 
