@@ -30,10 +30,10 @@ void print_menu(WINDOW *W, int selection)
 	for (int i = 0; i < n_fi_choices; i++) {
 		if (i == selection) {
 			wattron(W, A_REVERSE);
-			mvwprintw(W, y, 1, "%s\n", fi_choices[i]);
+			mvwprintw(W, y, 1, "%s", fi_choices[i]);
 			wattroff(W, A_REVERSE);
 		} else {
-			mvwprintw(W, y, 1, "%s\n", fi_choices[i]);
+			mvwprintw(W, y, 1, "%s", fi_choices[i]);
 		}
 		y++;
 	}
