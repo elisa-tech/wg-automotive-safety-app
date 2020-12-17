@@ -1,6 +1,6 @@
 DESTDIR ?=
 CFLAGS ?=
-LDFLAGS ?=-lncurses -ltinfo
+LDFLAGS +=-lncurses -ltinfo
 prefix ?= /usr
 
 all: SSS Safety-app Control-app
