@@ -56,6 +56,9 @@ bool do_E2Echeck(unsigned char Message[6])
 
 int main(void)
 {
+	int wdt;
+	bool write_wdt = false;
+
 	// creating the communication pipe
 	const char *Pipe = "/tmp/safety-signal-source_to_safety-app";
 
@@ -65,6 +68,10 @@ int main(void)
 
 	//buffer for the message to be read
 	unsigned char Message[6];
+
+	wdt = open("/dev/watchdog0", O_WRONLY);
+	if (wdt >= 0)
+		write_wdt = true;
 
 	while (1) {
 		if (read(fd, Message, 6) > 0) {
@@ -79,12 +86,16 @@ int main(void)
 				// system("killall afbd-cluster-gauges");
 				// Command QT app to do safe state display
 				system("cansend can0 021#0000000000000080");
+				write_wdt = false;
 			}
 			if (Message[0] == 0) {
 				// Signal source triggered safe state
 				printf("SAFESTATE (as commanded by signal source)\n");
 				system("cansend can0 021#0000000000000080");
+				write_wdt = false;
 			}
+			if (write_wdt)
+				write(wdt, "1", 1);
 		}
 		int sleeptime = 1000000;
 
@@ -94,5 +105,6 @@ int main(void)
 	}
 	//close file again
 	close(fd);
+	close(wdt);
 	return 0;
 }
