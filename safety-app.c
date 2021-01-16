@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <linux/watchdog.h>
 //needed for system
 #include <stdlib.h>
 
@@ -56,7 +57,7 @@ bool do_E2Echeck(unsigned char Message[6])
 
 int main(void)
 {
-	int wdt;
+	int wdt, ret, timeout = 10;
 	bool write_wdt = false;
 
 	// creating the communication pipe
@@ -72,6 +73,9 @@ int main(void)
 	wdt = open("/dev/watchdog0", O_WRONLY);
 	if (wdt >= 0)
 		write_wdt = true;
+	ret = ioctl(wdt, WDIOC_SETTIMEOUT, &timeout);
+	if (ret)
+		perror("ioctl");
 
 	while (1) {
 		if (read(fd, Message, 6) > 0) {
