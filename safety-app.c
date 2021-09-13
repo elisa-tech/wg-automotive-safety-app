@@ -57,6 +57,9 @@ bool do_E2Echeck(unsigned char Message[6])
 
 int main(void)
 {
+	// The wdt subsystem in its current form accepts the timeout as integer interpreted as seconds, 
+	// configuring timeouts in the ms range typically required in automotive safety systems is currently not possible. 
+	// For this proof of concept the unrealistic value of 10 is chosen for demonstration purposes only.
 	int wdt, ret, timeout = 10;
 	bool write_wdt = false;
 
