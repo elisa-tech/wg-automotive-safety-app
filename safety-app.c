@@ -78,7 +78,14 @@ int main(void)
 		perror("ioctl");
 
 	while (1) {
-		if (read(fd, Message, 6) > 0) {
+		int i = 0;
+		do {
+			ret = read(fd, &(Message[i]), 6 - i);
+			if (ret < 0)
+				break;
+			i += ret;
+		} while(i < 6);
+		if (i == 6) {
 			printf("Received Message:%i %i %i %i %i %i\n", Message[0], Message[1], Message[2], Message[3], Message[4], Message[5]);
 			if (do_E2Echeck(Message)) {
 				printf("%s\n", Message);
