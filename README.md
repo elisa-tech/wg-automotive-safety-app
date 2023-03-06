@@ -4,7 +4,7 @@ The ELISA enhanced AGL instrument cluster demo offers an interface using a named
 
 ## Signalsource-control-panel interface
 
-Alternatively to writing to the named pipe directly, an ncurses based control panel can be used as more convenient alternative. 
+An ncurses based control panel can be used as a convenient alternative to writing to the named pipe directly.
 
 ```
 Signalsource-control-panel
